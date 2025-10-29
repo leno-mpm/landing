@@ -18,14 +18,10 @@ const showVideo = () => {
 };
 
 
-
-
 import { fetchProducts } from './functions.js';
-
 
 // Función flecha para renderizar productos
 let renderProducts = () => {
-
     // Llamar a fetchProducts con la URL indicada
     fetchProducts('https://data-dawm.github.io/datum/reseller/products.json')
         .then(result => {
@@ -82,10 +78,41 @@ let renderProducts = () => {
         });
 };
 
+
+import { saveVotes } from './firebase.js';
+
+// Definir la función flecha enableForm
+let enableForm = () => {
+  // 1. Obtener referencia al formulario HTML
+    const form = document.getElementById('form_voting');
+    if(form){
+    // 2. Escuchar el evento 'submit' del formulario
+    form.addEventListener('submit', async (event) => {
+        // Evitar que el formulario recargue la página
+        event.preventDefault();
+
+        // 3. Obtener el valor del select con id 'select_product'
+        const selectProduct = document.getElementById('select_product');
+        const productId = selectProduct.value;
+
+        saveVotes(productId)
+            .then(response=> {
+                if (response.status){
+                    alert(response.message);
+                }else{
+                    alert(response.message);
+                }
+            });
+    });
+    }
+};
+
+
 // Función de autoejecución
 (() => {
     showToast();
     showVideo();
     renderProducts();
+    enableForm();
 })();
 
